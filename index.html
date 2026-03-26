@@ -2,98 +2,276 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Kloud-r v1</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kloud R V1 | Revival</title>
     <style>
-        :root { --lavender: #b19cd9; --bg: #050505; --radius: 12px; }
-        body { background: var(--bg); color: white; font-family: sans-serif; margin: 0; display: flex; height: 100vh; overflow: hidden; }
+        :root {
+            --lavender: #b19cd9;
+            --bg: #050505;
+            --card: #0d0d0f;
+            --radius: 18px;
+            --font: 'Segoe UI', system-ui, sans-serif;
+        }
 
-        /* SIDEBAR */
-        .sidebar { width: 70px; background: #0a0a0a; border-right: 1px solid #1a1a1a; display: flex; flex-direction: column; align-items: center; padding-top: 20px; gap: 20px; z-index: 100; }
-        .nav-btn { width: 40px; height: 40px; background: #111; border-radius: 10px; cursor: pointer; border: 1px solid #222; display: flex; align-items: center; justify-content: center; }
-        .nav-btn:hover { border-color: var(--lavender); }
+        body { 
+            background: var(--bg); 
+            color: white; 
+            font-family: var(--font); 
+            margin: 0; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            height: 100vh; 
+            overflow: hidden;
+        }
 
-        /* MAIN */
-        .main { flex: 1; position: relative; background: radial-gradient(circle, #1a0b2e 0%, #050505 100%); }
-        
-        /* AUTH PAGE */
-        #auth-page { position: fixed; inset: 0; background: #050505; z-index: 1000; display: flex; align-items: center; justify-content: center; }
-        .auth-card { background: #0a0a0a; padding: 40px; border-radius: var(--radius); border: 1px solid #222; text-align: center; }
-        .login-btn { background: var(--lavender); color: black; border: none; padding: 10px 30px; border-radius: 8px; font-weight: bold; cursor: pointer; margin-top: 20px; }
+        /* --- LANDING VIEW (872.png) --- */
+        #landing-view { 
+            display: flex; 
+            gap: 40px; 
+            max-width: 1000px; 
+            width: 90%; 
+            animation: fadeIn 0.8s ease;
+        }
 
-        /* HOME DASH */
-        #home-dash { padding: 40px; display: block; }
-        .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
-        .card { background: rgba(255,255,255,0.03); border: 1px solid #222; border-radius: var(--radius); padding: 20px; text-align: center; cursor: pointer; }
-        .card:hover { border-color: var(--lavender); }
-        .card img { width: 100%; border-radius: 8px; margin-bottom: 10px; }
+        .auth-box, .info-box { 
+            flex: 1; 
+            background: var(--card); 
+            padding: 40px; 
+            border-radius: var(--radius); 
+            border: 1px solid #1a1a1a; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
 
-        /* GAME LAYER */
-        #game-layer { display: none; position: absolute; inset: 0; background: #000; flex-direction: column; z-index: 50; }
-        .top-bar { background: #0a0a0a; padding: 10px; border-bottom: 1px solid #1a1a1a; }
-        .exit-btn { background: #333; color: white; border: none; padding: 5px 15px; border-radius: 5px; cursor: pointer; }
-        
+        .input-field { 
+            width: 100%; 
+            background: #161618; 
+            border: 1px solid #222; 
+            padding: 14px; 
+            border-radius: 10px; 
+            color: white; 
+            margin-bottom: 15px; 
+            box-sizing: border-box;
+            outline: none;
+        }
+        .input-field:focus { border-color: var(--lavender); }
+
+        .sign-in-btn { 
+            width: 100%; 
+            background: var(--lavender); 
+            color: black; 
+            font-weight: bold; 
+            padding: 14px; 
+            border: none; 
+            border-radius: 10px; 
+            cursor: pointer; 
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* --- HUB VIEW (873.png) --- */
+        #hub-view { 
+            display: none; 
+            width: 100%; 
+            height: 100%; 
+            padding: 40px; 
+            box-sizing: border-box; 
+            flex-direction: column;
+        }
+
+        .search-pill { 
+            background: rgba(177, 156, 217, 0.05); 
+            border: 1px solid var(--lavender); 
+            border-radius: 50px; 
+            padding: 12px 30px; 
+            color: var(--lavender); 
+            width: fit-content; 
+            font-size: 15px;
+            cursor: text;
+        }
+
+        .gear-icon {
+            color: var(--lavender);
+            font-size: 28px;
+            cursor: pointer;
+            filter: drop-shadow(0 0 8px var(--lavender));
+            transition: 0.3s;
+        }
+        .gear-icon:hover { transform: rotate(90deg); }
+
+        .game-grid { 
+            display: grid; 
+            grid-template-columns: repeat(4, 1fr); 
+            gap: 25px; 
+            margin-top: 40px;
+        }
+
+        .game-card { 
+            aspect-ratio: 1/1; 
+            background: var(--card); 
+            border-radius: 22px; 
+            border: 1px solid #1a1a1a; 
+            cursor: pointer; 
+            transition: 0.3s;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .game-card:hover { border-color: var(--lavender); transform: translateY(-5px); }
+
+        /* --- SETTINGS OVERLAY (874.png) --- */
+        #settings-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.85);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(5px);
+        }
+
+        .settings-card {
+            background: #0d0d0f;
+            width: 380px;
+            padding: 35px;
+            border-radius: 24px;
+            border: 1px solid #1a1a1a;
+        }
+
+        .setting-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            font-size: 14px;
+            color: #aaa;
+        }
+
+        select, .action-btn {
+            background: #161618;
+            color: white;
+            border: 1px solid #333;
+            padding: 8px 15px;
+            border-radius: 8px;
+            outline: none;
+        }
+
+        .sign-out-btn {
+            width: 100%;
+            margin-top: 10px;
+            background: transparent;
+            color: #666;
+            border: 1px solid #222;
+            padding: 12px;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+
+        /* --- ENGINE (875.png) --- */
+        #engine-view { display: none; width: 100%; height: 100%; position: fixed; inset: 0; background: #000; }
         iframe { width: 100%; height: 100%; border: none; }
+        .panic-btn { position: fixed; bottom: 25px; right: 25px; background: var(--lavender); border-radius: 50%; width: 45px; height: 45px; border: none; cursor: pointer; font-size: 20px; box-shadow: 0 0 15px var(--lavender); }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body>
 
-    <div id="auth-page">
-        <div class="auth-card">
-            <h1 style="letter-spacing: 5px;">KLOUD-R</h1>
-            <input type="text" id="user" placeholder="Session Name" style="background:#111; border:1px solid #333; color:white; padding:10px; border-radius:5px; width:200px;"><br>
-            <button class="login-btn" onclick="doLogin()">SIGN IN</button>
+    <div id="landing-view">
+        <div class="auth-box">
+            <h2 style="margin-top:0; display:flex; align-items:center; gap:12px;">
+                <span style="color:var(--lavender)">☁</span> Kloud R V1
+            </h2>
+            <h3 style="font-weight: 400; margin-bottom: 5px;">Sign In</h3>
+            <p style="font-size: 12px; color: #555; margin-bottom: 25px;">Use your CloudMoon account to play games.</p>
+            <input type="text" class="input-field" placeholder="Email">
+            <input type="password" class="input-field" placeholder="Password">
+            <button class="sign-in-btn" onclick="showHub()">Sign In</button>
+            <p style="font-size: 11px; text-align: center; color: var(--lavender); text-decoration: underline; cursor: pointer; margin-top: 20px;">Dont have an account? create one!</p>
+        </div>
+
+        <div class="info-box">
+            <h1 style="font-size: 28px; margin-bottom: 15px;">What is Kloud R V1?</h1>
+            <p style="color: #888; line-height: 1.7; font-size: 15px;">Kloud was an archived project this is the revival, shouldve expected it maybe might go public idk if ur seeing this it did.</p>
+            <h1 style="font-size: 28px; margin-top: 30px; margin-bottom: 15px;">who was this made by?</h1>
+            <p style="color: #888; font-size: 15px;">kiet or @thisgamesuxk</p>
         </div>
     </div>
 
-    <div class="sidebar">
-        <div class="nav-btn" onclick="showHome()">🏠</div>
-        <div class="nav-btn" onclick="location.reload()" style="margin-top: auto; margin-bottom: 20px;">🚪</div>
+    <div id="hub-view">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div class="search-pill">Search through games.. (1/1)</div>
+            <div class="gear-icon" onclick="toggleSettings()">⚙</div>
+        </div>
+        <div class="game-grid">
+            <div class="game-card" onclick="launchGame('https://web.cloudmoonapp.com/')">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/3/3a/Roblox_player_icon_black.svg" style="width:40%; filter: invert(1); opacity: 0.8;">
+            </div>
+            <div class="game-card" style="opacity:0.1; cursor:default;"></div>
+            <div class="game-card" style="opacity:0.1; cursor:default;"></div>
+            <div class="game-card" style="opacity:0.1; cursor:default;"></div>
+        </div>
     </div>
 
-    <div class="main">
-        <div id="home-dash">
-            <h1 style="font-weight: 200;">☁ Play</h1>
-            <div class="grid">
-                <div class="card" onclick="play('https://web.cloudmoonapp.com/')">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/3/3a/Roblox_player_icon_black.svg">
-                    <h3>ROBLOX GLOBAL</h3>
-                    <p style="color: #00ff00; font-size: 10px;">LATENCY: LOW</p>
-                </div>
+    <div id="settings-overlay">
+        <div class="settings-card">
+            <div class="setting-row">
+                <span>Select Server</span>
+                <select><option>US West</option><option>US East</option><option>Europe</option></select>
             </div>
+            <div class="setting-row">
+                <span>Streaming Quality</span>
+                <select id="quality-selector">
+                    <option value="sd">SD (Standard)</option>
+                    <option value="hd">HD (Free High Def)</option>
+                </select>
+            </div>
+            <div class="setting-row">
+                <span>Clear Games Cache</span>
+                <button class="action-btn">Clear</button>
+            </div>
+            <div class="setting-row">
+                <span>Password</span>
+                <button class="action-btn">Change</button>
+            </div>
+            <div class="setting-row">
+                <span>Language</span>
+                <select><option>English</option><option>Spanish</option></select>
+            </div>
+            <button class="sign-out-btn" onclick="location.reload()">[→ Sign Out</button>
+            <button class="sign-in-btn" style="margin-top:15px;" onclick="toggleSettings()">Close Settings</button>
         </div>
+    </div>
 
-        <div id="game-layer">
-            <div class="top-bar">
-                <button class="exit-btn" onclick="showHome()">← EXIT</button>
-            </div>
-            <iframe id="game-frame" src=""></iframe>
-        </div>
+    <div id="engine-view">
+        <iframe id="engine-frame" sandbox="allow-forms allow-scripts allow-same-origin allow-popups allow-pointer-lock" src=""></iframe>
+        <button class="panic-btn" onclick="exitGame()">🏠</button>
     </div>
 
     <script>
-        // Check if already logged in
-        if(localStorage.getItem('k-user')) {
-            document.getElementById('auth-page').style.display = 'none';
+        function showHub() {
+            document.getElementById('landing-view').style.display = 'none';
+            document.getElementById('hub-view').style.display = 'flex';
         }
 
-        function doLogin() {
-            const name = document.getElementById('user').value;
-            if(name) {
-                localStorage.setItem('k-user', name);
-                document.getElementById('auth-page').style.display = 'none';
-            }
+        function toggleSettings() {
+            const overlay = document.getElementById('settings-overlay');
+            overlay.style.display = overlay.style.display === 'flex' ? 'none' : 'flex';
         }
 
-        function play(url) {
-            document.getElementById('home-dash').style.display = 'none';
-            document.getElementById('game-layer').style.display = 'flex';
-            document.getElementById('game-frame').src = url;
+        function launchGame(url) {
+            const quality = document.getElementById('quality-selector').value;
+            // The HD Toggle logic can be expanded here to modify bitrate/resolution parameters
+            console.log("Launching instance in mode:", quality);
+            
+            document.getElementById('hub-view').style.display = 'none';
+            document.getElementById('engine-view').style.display = 'block';
+            document.getElementById('engine-frame').src = url;
         }
 
-        function showHome() {
-            document.getElementById('game-layer').style.display = 'none';
-            document.getElementById('home-dash').style.display = 'block';
-            document.getElementById('game-frame').src = '';
+        function exitGame() {
+            document.getElementById('engine-view').style.display = 'none';
+            document.getElementById('hub-view').style.display = 'flex';
+            document.getElementById('engine-frame').src = '';
         }
     </script>
 </body>
