@@ -2,135 +2,73 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Google Classroom</title> <style>
-        :root {
-            --lavender: #b19cd9;
-            --bg: #050505;
-            --card: #0d0d0f;
-            --radius: 18px;
-        }
-
-        body { 
-            background: var(--bg); 
-            color: white; 
-            font-family: 'Inter', sans-serif; 
-            margin: 0; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-            height: 100vh; 
-            overflow: hidden;
-        }
-
-        /* --- STAGE 1: LANDING (872.png) --- */
-        #landing-view { display: flex; gap: 40px; max-width: 1000px; width: 90%; animation: fadeIn 0.5s; }
+    <title>Google Classroom</title>
+    <style>
+        :root { --lavender: #b19cd9; --bg: #050505; --card: #0d0d0f; --radius: 18px; }
+        body { background: var(--bg); color: white; font-family: sans-serif; margin: 0; display: flex; align-items: center; justify-content: center; height: 100vh; overflow: hidden; }
+        #landing-view { display: flex; gap: 40px; width: 90%; max-width: 1000px; }
         .auth-box, .info-box { flex: 1; background: var(--card); padding: 40px; border-radius: var(--radius); border: 1px solid #1a1a1a; }
-        .input-field { width: 100%; background: #161618; border: 1px solid #222; padding: 14px; border-radius: 10px; color: white; margin-bottom: 15px; box-sizing: border-box; outline: none; }
-        .sign-in-btn { width: 100%; background: var(--lavender); color: black; font-weight: bold; padding: 14px; border: none; border-radius: 10px; cursor: pointer; text-transform: uppercase; }
-
-        /* --- STAGE 2: HUB (873.png) --- */
+        .input-field { width: 100%; background: #161618; border: 1px solid #222; padding: 12px; border-radius: 8px; color: white; margin-bottom: 15px; box-sizing: border-box; }
+        .sign-in-btn { width: 100%; background: var(--lavender); color: black; font-weight: bold; padding: 12px; border: none; border-radius: 8px; cursor: pointer; text-transform: uppercase; }
         #hub-view { display: none; width: 100%; height: 100%; padding: 40px; flex-direction: column; box-sizing: border-box; }
-        .search-pill { background: rgba(177, 156, 217, 0.05); border: 1px solid var(--lavender); border-radius: 50px; padding: 12px 30px; color: var(--lavender); width: fit-content; }
+        .search-pill { background: rgba(177, 156, 217, 0.05); border: 1px solid var(--lavender); border-radius: 50px; padding: 10px 25px; color: var(--lavender); width: fit-content; }
         .game-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-top: 30px; }
-        .game-card { aspect-ratio: 1/1; background: var(--card); border-radius: 20px; border: 1px solid #1a1a1a; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.3s; }
-        .game-card:hover { border-color: var(--lavender); transform: translateY(-5px); }
-
-        /* --- STAGE 3: SETTINGS (874.png) --- */
-        #settings-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 5000; align-items: center; justify-content: center; }
-        .settings-card { background: #0d0d0f; width: 360px; padding: 35px; border-radius: 24px; border: 1px solid #1a1a1a; }
-        .setting-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; color: #888; font-size: 14px; }
-        select, .action-btn { background: #161618; color: white; border: 1px solid #333; padding: 8px 12px; border-radius: 8px; }
-
-        /* --- STAGE 4: ENGINE --- */
-        #engine-view { display: none; width: 100%; height: 100%; position: fixed; inset: 0; background: #000; z-index: 6000; }
+        .game-card { aspect-ratio: 1/1; background: var(--card); border-radius: 20px; border: 1px solid #1a1a1a; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+        #engine-view { display: none; width: 100%; height: 100%; position: fixed; inset: 0; background: #000; z-index: 9999; }
         iframe { width: 100%; height: 100%; border: none; }
-        .panic-btn { position: fixed; bottom: 20px; right: 20px; background: var(--lavender); border-radius: 50%; width: 45px; height: 45px; border: none; cursor: pointer; z-index: 7000; }
-
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
     </style>
 </head>
 <body>
 
     <div id="landing-view">
         <div class="auth-box">
-            <h2 style="color:var(--lavender); margin:0 0 20px 0;">☁ Kloud R V1</h2>
+            <h2 style="color:var(--lavender)">☁ Kloud R V1</h2>
             <h3>Sign In</h3>
-            <p style="font-size:12px; color:#555; margin-bottom:25px;">Use your CloudMoon account to play games.</p>
             <input type="text" id="email" class="input-field" placeholder="Email">
             <input type="password" id="pass" class="input-field" placeholder="Password">
             <button class="sign-in-btn" onclick="auth()">Sign In</button>
         </div>
         <div class="info-box">
             <h1>What is Kloud R V1?</h1>
-            <p style="color:#888;">Kloud was an archived project this is the revival, shouldve expected it maybe might go public idk if ur seeing this it did.</p>
-            <p style="color:#444; margin-top:40px;">kiet or @thisgamesuxk</p>
+            <p style="color:#888">Revival project by kiet / @thisgamesuxk</p>
         </div>
     </div>
 
     <div id="hub-view">
-        <div style="display:flex; justify-content:space-between; align-items:center;">
-            <div class="search-pill">Search through games.. (1/1)</div>
-            <div style="color:var(--lavender); font-size:28px; cursor:pointer;" onclick="openSet()">⚙</div>
-        </div>
+        <div class="search-pill">Search through games.. (1/1)</div>
         <div class="game-grid">
-            <div class="game-card" onclick="launch('https://web.cloudmoonapp.com/')">
+            <div class="game-card" onclick="launch('aHR0cHM6Ly93ZWIuY2xvdWRtb29uYXBwLmNvbS8=')">
                 <img src="https://upload.wikimedia.org/wikipedia/commons/3/3a/Roblox_player_icon_black.svg" width="50" style="filter:invert(1)">
             </div>
-            <div class="game-card" style="opacity:0.05"></div>
-            <div class="game-card" style="opacity:0.05"></div>
-            <div class="game-card" style="opacity:0.05"></div>
-        </div>
-    </div>
-
-    <div id="settings-overlay">
-        <div class="settings-card">
-            <div class="setting-row"><span>Select Server</span><select><option>US West</option><option>US East</option></select></div>
-            <div class="setting-row"><span>Streaming Quality</span><select id="quality"><option value="sd">SD</option><option value="hd">Free HD</option></select></div>
-            <div class="setting-row"><span>Clear Games Cache</span><button class="action-btn">Clear</button></div>
-            <div class="setting-row"><span>Password</span><button class="action-btn">Change</button></div>
-            <div class="setting-row"><span>Language</span><select><option>English</option></select></div>
-            <button class="sign-in-btn" onclick="closeSet()">Close</button>
-            <button onclick="location.reload()" style="background:none; border:none; color:#444; width:100%; margin-top:20px; cursor:pointer;">[→ Sign Out</button>
         </div>
     </div>
 
     <div id="engine-view">
         <iframe id="main-frame"></iframe>
-        <button class="panic-btn" onclick="location.reload()">🏠</button>
+        <button style="position:fixed; bottom:20px; right:20px;" onclick="location.reload()">🏠</button>
     </div>
 
     <script>
         function auth() {
             const e = document.getElementById('email').value;
             const p = document.getElementById('pass').value;
-            if(e.includes('@') && p.length > 3) {
+            if(e && p) {
                 document.getElementById('landing-view').style.display = 'none';
                 document.getElementById('hub-view').style.display = 'flex';
-            } else { alert("Enter valid credentials."); }
+            }
         }
 
-        function openSet() { document.getElementById('settings-overlay').style.display = 'flex'; }
-        function closeSet() { document.getElementById('settings-overlay').style.display = 'none'; }
-
-        function launch(url) {
+        function launch(encodedUrl) {
+            const url = atob(encodedUrl); // Decodes the link only when clicked
             const frame = document.getElementById('main-frame');
             document.getElementById('hub-view').style.display = 'none';
             document.getElementById('engine-view').style.display = 'block';
 
-            // THE REDIRECT KILLER: Creating a clean sub-window
-            frame.src = "about:blank";
-            setTimeout(() => {
-                const doc = frame.contentWindow.document;
-                doc.open();
-                doc.write(`
-                    <body style="margin:0;background:#000;">
-                        <iframe src="${url}" style="width:100vw;height:100vh;border:none;" 
-                        sandbox="allow-forms allow-scripts allow-same-origin allow-popups allow-pointer-lock"></iframe>
-                    </body>
-                `);
-                doc.close();
-            }, 100);
+            // THE NUCLEAR OPTION: Blob URL + Sandbox
+            // This creates a virtual file that has NO TOP LEVEL, so the redirect fails.
+            const content = `<html><body style="margin:0;background:#000;"><iframe src="${url}" style="width:100vw;height:100vh;border:none;" sandbox="allow-forms allow-scripts allow-same-origin allow-popups allow-pointer-lock"></iframe></body></html>`;
+            const blob = new Blob([content], {type: 'text/html'});
+            frame.src = URL.createObjectURL(blob);
         }
     </script>
 </body>
