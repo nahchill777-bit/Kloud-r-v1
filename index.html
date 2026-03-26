@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://web.cloudmoonapp.com" crossorigin>
+    <title>Kloud-r v1 | Pro Galaxy Client</title>
+    <style>
+        :root {
+            --lavender: #b19cd9;
+            --galaxy: radial-gradient(circle at center, #160a25 0%, #030303 100%);
+            --glass: rgba(255, 255, 255, 0.02);
+            --border: rgba(177, 156, 217, 0.15);
+            --glow: 0 0 20px rgba(177, 156, 217, 0.2);
+            --radius: 12px; /* Concept Spec */
+        }
+
+        body {
+            background: var(--galaxy);
+            background-attachment: fixed;
+            color: var(--lavender);
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* CONCEPT HEADER */
+        .header {
+            width: 100%;
+            padding: 80px 0 40px 0;
+            text-align: center;
+            backdrop-filter: blur(10px);
+        }
+
+        h1 {
+            font-size: 4rem;
+            margin: 0;
+            font-weight: 200;
+            letter-spacing: 12px;
+            text-shadow: 0 0 30px rgba(177, 156, 217, 0.4);
+            text-transform: uppercase;
+        }
+
+        .search-area { margin-top: 40px; }
+        .search-input {
+            background: var(--glass);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 16px 30px;
+            width: 480px;
+            color: white;
+            outline: none;
+            transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            backdrop-filter: blur(20px);
+            font-size: 14px;
+            letter-spacing: 1px;
+        }
+        .search-input:focus { border-color: var(--lavender); width: 520px; box-shadow: var(--glow); }
+
+        /* 3-COLUMN GALAXY GRID */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 40px;
+            width: 90%;
+            max-width: 1250px;
+            padding: 60px 0;
+        }
+
+        .tile {
+            background: var(--glass);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 30px;
+            text-align: center;
+            transition: 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            backdrop-filter: blur(12px);
+            cursor: pointer;
+            position: relative;
+        }
+
+        .tile:hover {
+            transform: translateY(-15px);
+            border-color: var(--lavender);
+            background: rgba(177, 156, 217, 0.05);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7);
+        }
+
+        .tile img {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 25px;
+            filter: brightness(0.8) contrast(1.1);
+            transition: 0.3s;
+        }
+
+        .tile:hover img { filter: brightness(1); }
+
+        .tile h3 { font-weight: 300; font-size: 1.3rem; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 20px; }
+
+        .ping-tag { font-size: 9px; color: #00ff00; background: rgba(0,255,0,0.05); padding: 5px 12px; border-radius: 20px; margin-bottom: 20px; display: inline-block; border: 1px solid rgba(0,255,0,0.2); }
+
+        .launch-btn {
+            background: transparent;
+            border: 1px solid var(--lavender);
+            color: var(--lavender);
+            padding: 14px;
+            width: 100%;
+            border-radius: var(--radius);
+            font-weight: bold;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            transition: 0.3s;
+        }
+
+        .launch-btn:hover { background: var(--lavender); color: #000; box-shadow: 0 0 30px var(--lavender); }
+
+        .footer { position: fixed; bottom: 20px; left: 40px; font-size: 10px; opacity: 0.3; letter-spacing: 2px; }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h1>KLOUD-R</h1>
+        <div class="search-area">
+            <input type="text" id="engineSearch" class="search-input" placeholder="ACCESS INSTANCE HUB...">
+        </div>
+    </div>
+
+    <div class="grid" id="mainGrid">
+        <div class="tile" onclick="boot('https://web.cloudmoonapp.com/')">
+            <div class="ping-tag">● LATENCY BYPASS: ACTIVE</div>
+            <img src="https://upload.wikimedia.org/wikipedia/commons/3/3a/Roblox_player_icon_black.svg">
+            <h3>Roblox Pro</h3>
+            <button class="launch-btn">Boot Engine</button>
+        </div>
+        
+        </div>
+
+    <div class="footer">STABLE // BUILD 1.0.12 // ENGINE: GALAXY-RAW</div>
+
+    <script>
+        // CLIENT BOOT: This is the ONLY way to bypass the 'Sad Face' block on a Chromebook.
+        function boot(url) {
+            const w = window.screen.availWidth * 0.85;
+            const h = window.screen.availHeight * 0.85;
+            const left = (window.screen.width / 2) - (w / 2);
+            const top = (window.screen.height / 2) - (h / 2);
+
+            // Using the 'Popup' method ensures the site doesn't detect your host as a proxy
+            // This is how you avoid 'Adblock' triggers that cut into your game time.
+            const win = window.open(url, "KloudInstance", 
+                `width=${w},height=${h},top=${top},left=${left},menubar=no,toolbar=no,location=no,status=no`);
+            
+            if (!win) alert("Chromebook blocked the popup! Click the 'Pop-up blocked' icon in the URL bar to allow.");
+        }
+
+        document.getElementById('engineSearch').addEventListener('input', (e) => {
+            const term = e.target.value.toLowerCase();
+            document.querySelectorAll('.tile').forEach(tile => {
+                tile.style.display = tile.innerText.toLowerCase().includes(term) ? 'block' : 'none';
+            });
+        });
+    </script>
+</body>
+</html>
+
