@@ -2,88 +2,99 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Kloud-r v1 | Galaxy SPA</title>
+    <title>Kloud-r v1</title>
     <style>
-        :root { --lavender: #b19cd9; --bg: #050505; --side: #0a0a0a; --radius: 12px; }
-        body { background: var(--bg); color: white; font-family: 'Segoe UI', sans-serif; margin: 0; display: flex; height: 100vh; overflow: hidden; }
+        :root { --lavender: #b19cd9; --bg: #050505; --radius: 12px; }
+        body { background: var(--bg); color: white; font-family: sans-serif; margin: 0; display: flex; height: 100vh; overflow: hidden; }
 
-        /* SIDEBAR (Always Fixed) */
-        .sidebar { width: 80px; background: var(--side); border-right: 1px solid #1a1a1a; display: flex; flex-direction: column; align-items: center; padding-top: 30px; gap: 25px; z-index: 100; }
-        .nav-icon { width: 45px; height: 45px; background: #111; border-radius: var(--radius); display: flex; align-items: center; justify-content: center; cursor: pointer; border: 1px solid #222; }
-        .nav-icon:hover { border-color: var(--lavender); box-shadow: 0 0 15px rgba(177, 156, 217, 0.2); }
-        .sign-out { margin-top: auto; margin-bottom: 30px; font-size: 10px; color: #444; cursor: pointer; text-transform: uppercase; }
+        /* SIDEBAR */
+        .sidebar { width: 70px; background: #0a0a0a; border-right: 1px solid #1a1a1a; display: flex; flex-direction: column; align-items: center; padding-top: 20px; gap: 20px; z-index: 100; }
+        .nav-btn { width: 40px; height: 40px; background: #111; border-radius: 10px; cursor: pointer; border: 1px solid #222; display: flex; align-items: center; justify-content: center; }
+        .nav-btn:hover { border-color: var(--lavender); }
 
-        /* MAIN CONTENT */
+        /* MAIN */
         .main { flex: 1; position: relative; background: radial-gradient(circle, #1a0b2e 0%, #050505 100%); }
         
-        /* DASHBOARD GRID */
-        #home { padding: 50px; }
-        .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; margin-top: 40px; }
-        .card { background: rgba(255,255,255,0.03); border: 1px solid rgba(177, 156, 217, 0.1); border-radius: var(--radius); padding: 25px; text-align: center; cursor: pointer; transition: 0.3s; }
-        .card:hover { transform: translateY(-5px); border-color: var(--lavender); }
-        .card img { width: 100%; border-radius: 8px; margin-bottom: 15px; }
+        /* AUTH PAGE */
+        #auth-page { position: fixed; inset: 0; background: #050505; z-index: 1000; display: flex; align-items: center; justify-content: center; }
+        .auth-card { background: #0a0a0a; padding: 40px; border-radius: var(--radius); border: 1px solid #222; text-align: center; }
+        .login-btn { background: var(--lavender); color: black; border: none; padding: 10px 30px; border-radius: 8px; font-weight: bold; cursor: pointer; margin-top: 20px; }
 
-        /* GAME ENGINE WRAPPER */
-        #engine { display: none; position: absolute; inset: 0; background: #000; flex-direction: column; z-index: 50; }
-        .bar { background: #0a0a0a; padding: 10px 20px; display: flex; align-items: center; border-bottom: 1px solid #1a1a1a; }
-        .back { background: var(--lavender); color: #000; border: none; padding: 5px 15px; border-radius: 6px; font-weight: bold; cursor: pointer; margin-right: 15px; }
+        /* HOME DASH */
+        #home-dash { padding: 40px; display: block; }
+        .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+        .card { background: rgba(255,255,255,0.03); border: 1px solid #222; border-radius: var(--radius); padding: 20px; text-align: center; cursor: pointer; }
+        .card:hover { border-color: var(--lavender); }
+        .card img { width: 100%; border-radius: 8px; margin-bottom: 10px; }
+
+        /* GAME LAYER */
+        #game-layer { display: none; position: absolute; inset: 0; background: #000; flex-direction: column; z-index: 50; }
+        .top-bar { background: #0a0a0a; padding: 10px; border-bottom: 1px solid #1a1a1a; }
+        .exit-btn { background: #333; color: white; border: none; padding: 5px 15px; border-radius: 5px; cursor: pointer; }
         
-        iframe { flex: 1; border: none; width: 100%; height: 100%; }
+        iframe { width: 100%; height: 100%; border: none; }
     </style>
 </head>
 <body>
 
-    <nav class="sidebar">
-        <div class="nav-icon">🪐</div>
-        <div class="nav-icon" onclick="showHome()">🏠</div>
-        <div class="sign-out" onclick="location.reload()">Sign Out</div>
-    </nav>
+    <div id="auth-page">
+        <div class="auth-card">
+            <h1 style="letter-spacing: 5px;">KLOUD-R</h1>
+            <input type="text" id="user" placeholder="Session Name" style="background:#111; border:1px solid #333; color:white; padding:10px; border-radius:5px; width:200px;"><br>
+            <button class="login-btn" onclick="doLogin()">SIGN IN</button>
+        </div>
+    </div>
+
+    <div class="sidebar">
+        <div class="nav-btn" onclick="showHome()">🏠</div>
+        <div class="nav-btn" onclick="location.reload()" style="margin-top: auto; margin-bottom: 20px;">🚪</div>
+    </div>
 
     <div class="main">
-        <div id="home">
-            <h1 style="letter-spacing: 8px; font-weight: 200;">☁ PLAY</h1>
+        <div id="home-dash">
+            <h1 style="font-weight: 200;">☁ Play</h1>
             <div class="grid">
-                <div class="card" onclick="runGame('https://web.cloudmoonapp.com/play/roblox')">
+                <div class="card" onclick="play('https://web.cloudmoonapp.com/')">
                     <img src="https://upload.wikimedia.org/wikipedia/commons/3/3a/Roblox_player_icon_black.svg">
-                    <h3>ROBLOX CLOUD</h3>
-                    <p style="color: #00ff00; font-size: 10px;">STATUS: ONLINE</p>
+                    <h3>ROBLOX GLOBAL</h3>
+                    <p style="color: #00ff00; font-size: 10px;">LATENCY: LOW</p>
                 </div>
             </div>
         </div>
 
-        <div id="engine">
-            <div class="bar">
-                <button class="back" onclick="showHome()">← BACK</button>
-                <span style="font-size: 12px; letter-spacing: 2px;">KLOUD-R ENGINE ACTIVE</span>
+        <div id="game-layer">
+            <div class="top-bar">
+                <button class="exit-btn" onclick="showHome()">← EXIT</button>
             </div>
-            <div id="frame-container" style="flex: 1;"></div>
+            <iframe id="game-frame" src=""></iframe>
         </div>
     </div>
 
     <script>
-        function runGame(url) {
-            document.getElementById('home').style.display = 'none';
-            document.getElementById('engine').style.display = 'flex';
-            
-            // THE BLOB TRICK: This is how Cloudmooner stops the redirect.
-            // It creates a "Virtual" page so CloudMoon thinks it is the main site.
-            const frameContainer = document.getElementById('frame-container');
-            const iframe = document.createElement('iframe');
-            
-            iframe.src = url;
-            iframe.setAttribute("allow", "fullscreen; gamepad; autoplay; pointer-lock");
-            iframe.setAttribute("sandbox", "allow-forms allow-scripts allow-same-origin allow-popups allow-pointer-lock");
-            
-            frameContainer.innerHTML = '';
-            frameContainer.appendChild(iframe);
+        // Check if already logged in
+        if(localStorage.getItem('k-user')) {
+            document.getElementById('auth-page').style.display = 'none';
+        }
+
+        function doLogin() {
+            const name = document.getElementById('user').value;
+            if(name) {
+                localStorage.setItem('k-user', name);
+                document.getElementById('auth-page').style.display = 'none';
+            }
+        }
+
+        function play(url) {
+            document.getElementById('home-dash').style.display = 'none';
+            document.getElementById('game-layer').style.display = 'flex';
+            document.getElementById('game-frame').src = url;
         }
 
         function showHome() {
-            document.getElementById('engine').style.display = 'none';
-            document.getElementById('home').style.display = 'block';
-            document.getElementById('frame-container').innerHTML = '';
+            document.getElementById('game-layer').style.display = 'none';
+            document.getElementById('home-dash').style.display = 'block';
+            document.getElementById('game-frame').src = '';
         }
     </script>
 </body>
 </html>
-
