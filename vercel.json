@@ -1,5 +1,8 @@
 {
-  "cleanUrls": true,
-  "trailingSlash": false
+  "rewrites": [
+    {
+      "source": "/proxy/(.*)",
+      "destination": "https://$1"
+    }
+  ]
 }
-
